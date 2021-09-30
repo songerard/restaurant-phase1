@@ -27,3 +27,9 @@ app.listen(port, () => {
 app.get('/', (req, res) => {
   res.render('index', { restaurants })
 })
+
+// show page
+app.get('/restaurants/:id', (req, res) => {
+  const restaurant = restaurants.find(r => r.id === Number(req.params.id))
+  res.render('show', { restaurant })
+})
