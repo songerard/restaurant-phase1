@@ -33,3 +33,12 @@ app.get('/restaurants/:id', (req, res) => {
   const restaurant = restaurants.find(r => r.id === Number(req.params.id))
   res.render('show', { restaurant })
 })
+
+// search function
+app.get('/search', (req, res) => {
+  const keyword = req.query.keyword.toLowerCase()
+  const findByName = restaurants.filter(r => r.name.toLowerCase().includes(keyword))
+  const findByCategory = restaurants.filter(r => r.category.toLowerCase().includes(keyword))
+  const filteredRestaurants = Object.assign(findByName, findByCategory)
+  res.render('index', { restaurants: filteredRestaurants })
+})
