@@ -12,5 +12,5 @@ type keywords for the name or category of the restaurants in search bar
 ## Technical issue
 - Node.js
 - express.js
-- express-handlebars as view engine
+- express-handlebars v5.3.4 as view engine
 - bootstrap 4.6
