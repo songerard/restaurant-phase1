@@ -11,8 +11,7 @@ app.set('view engine', 'hbs')
 app.use(express.static('public'))
 
 // require restaurant.json
-const restaurantJSON = require('./restaurant.json')
-const restaurants = restaurantJSON.results
+const restaurantList = require('./restaurant.json').results
 
 // set port
 const port = 3000
@@ -25,24 +24,23 @@ app.listen(port, () => {
 // set route
 // index page
 app.get('/', (req, res) => {
-  res.render('index', { restaurants })
+  res.render('index', { restaurantList })
 })
 
 // show page
 app.get('/restaurants/:id', (req, res) => {
-  const restaurant = restaurants.find(r => r.id === Number(req.params.id))
+  const restaurant = restaurantList.find(r => r.id === Number(req.params.id))
   res.render('show', { restaurant })
 })
 
 // search function
 app.get('/search', (req, res) => {
   const keyword = req.query.keyword.toLowerCase().trim()
-  const findByName = restaurants.filter(r => r.name.toLowerCase().includes(keyword))
-  const findByCategory = restaurants.filter(r => r.category.toLowerCase().includes(keyword))
-  let filteredRestaurants = Object.assign(findByName, findByCategory)
+  let filteredRestaurants = restaurantList.filter(r => r.name.toLowerCase().includes(keyword) || r.category.toLowerCase().includes(keyword))
   const searchAlert = (!filteredRestaurants.length || !keyword) ? true : false
+  const showReturnBtn = (!searchAlert) ? true : false
   if (!filteredRestaurants.length) {
-    filteredRestaurants = restaurants
+    filteredRestaurants = restaurantList
   }
-  res.render('index', { restaurants: filteredRestaurants, keyword, searchAlert })
+  res.render('index', { restaurantList: filteredRestaurants, keyword, searchAlert, showReturnBtn })
 })
